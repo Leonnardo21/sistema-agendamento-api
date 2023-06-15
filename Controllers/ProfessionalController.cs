@@ -1,4 +1,5 @@
 using ConnectHealthApi.Data;
+using ConnectHealthApi.Extensions;
 using ConnectHealthApi.Models;
 using ConnectHealthApi.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -40,6 +41,8 @@ namespace ConnectHealthApi.Controllers
         [HttpPost("v1/professional/")]
         public async Task<IActionResult> PostAsync([FromBody] EditorProfessionalViewModel model, [FromServices] ConnectHealthContext context)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(new ResultViewModel<UserModel>(ModelState.GetErrors()));
             try {
                 var professional = new ProfessionalModel {
                     Name = model.Name,
@@ -84,7 +87,7 @@ namespace ConnectHealthApi.Controllers
                 await context.SaveChangesAsync();
 
                 return Ok(new ResultViewModel<ProfessionalModel>(model));
-            }catch (Exception ex) {
+            }catch {
                 return StatusCode(500, new ResultViewModel<ProfessionalModel>("P004P500 - Falha interna no servidor"));
             }
         }

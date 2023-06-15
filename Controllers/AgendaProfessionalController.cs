@@ -54,7 +54,7 @@ namespace ConnectHealthApi.Controllers
                     ProfessionalId = model.ProfessionalId,
                 };
 
-                context.AgendaProfessionals.Add(agenda);
+                await context.AgendaProfessionals.AddAsync(agenda);
                 await context.SaveChangesAsync();
 
                 return Created($"{agenda.Id}", new ResultViewModel<AgendaProfessionalModel>(agenda));

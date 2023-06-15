@@ -9,9 +9,10 @@ namespace ConnectHealthApi.Data
         public DbSet<UserModel> Users { get; set; } = null!;
         public DbSet<ProfessionalModel> Professionals { get; set; } = null!;
         public DbSet<AgendaProfessionalModel> AgendaProfessionals { get; set; } = null!;
+        public DbSet<SchedulingModel> Schedulings { get; set; } = null!;
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            options.UseSqlServer("Server=<Server>;Database=<DB>;User ID=sa;Password=<Password>;TrustServerCertificate=true");
+            options.UseSqlServer("Server=<server>,<port>;Database=<database>;User ID=sa;Password=<password>;TrustServerCertificate=true");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -19,6 +20,7 @@ namespace ConnectHealthApi.Data
             modelBuilder.ApplyConfiguration(new UserMap());
             modelBuilder.ApplyConfiguration(new ProfessionalMap());
             modelBuilder.ApplyConfiguration(new AgendaProfessionalMap());
+            modelBuilder.ApplyConfiguration(new SchedulingMap());
         }
     }
 }

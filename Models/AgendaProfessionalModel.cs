@@ -1,8 +1,12 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace ConnectHealthApi.Models
 {
     public class AgendaProfessionalModel
     {
         public int Id { get; set; }
+
+        [Required(ErrorMessage = "O campo data é obrigatório")]
         public DateTime Date { get; set; }
         public TimeSpan TimeTable { get; set; }
         public int Duration { get; set; }
@@ -10,6 +14,6 @@ namespace ConnectHealthApi.Models
 
         //Foreign Key
         public int ProfessionalId { get; set; }
-        public ProfessionalModel Professional { get; set; } = null!;
+        public UserModel? Professional { get; set; }
     }
 }

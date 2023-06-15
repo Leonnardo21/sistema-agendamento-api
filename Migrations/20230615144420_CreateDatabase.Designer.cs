@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConnectHealthApi.Migrations
 {
     [DbContext(typeof(ConnectHealthContext))]
-    [Migration("20230611033051_AddedAgendaProfessionalMap")]
-    partial class AddedAgendaProfessionalMap
+    [Migration("20230615144420_CreateDatabase")]
+    partial class CreateDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -53,7 +53,7 @@ namespace ConnectHealthApi.Migrations
 
                     b.HasIndex("ProfessionalId");
 
-                    b.ToTable("Agenda_Professional", (string)null);
+                    b.ToTable("Scheduling_Professional", (string)null);
                 });
 
             modelBuilder.Entity("ConnectHealthApi.Models.ProfessionalModel", b =>
@@ -110,6 +110,41 @@ namespace ConnectHealthApi.Migrations
                     b.ToTable("Professional", (string)null);
                 });
 
+            modelBuilder.Entity("ConnectHealthApi.Models.SchedulingModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Duration")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Local")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProfessionalId")
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan>("TimeTable")
+                        .HasColumnType("time");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProfessionalId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Scheduling", (string)null);
+                });
+
             modelBuilder.Entity("ConnectHealthApi.Models.UserModel", b =>
                 {
                     b.Property<int>("Id")
@@ -161,14 +196,35 @@ namespace ConnectHealthApi.Migrations
 
             modelBuilder.Entity("ConnectHealthApi.Models.AgendaProfessionalModel", b =>
                 {
+                    b.HasOne("ConnectHealthApi.Models.UserModel", "Professional")
+                        .WithMany()
+                        .HasForeignKey("ProfessionalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_SchedulingProfessional_ProfessionalId");
+
+                    b.Navigation("Professional");
+                });
+
+            modelBuilder.Entity("ConnectHealthApi.Models.SchedulingModel", b =>
+                {
                     b.HasOne("ConnectHealthApi.Models.ProfessionalModel", "Professional")
                         .WithMany()
                         .HasForeignKey("ProfessionalId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("FK_AgendaProfessional_ProfessionalId");
+                        .HasConstraintName("FK_Professional_Scheduling");
+
+                    b.HasOne("ConnectHealthApi.Models.UserModel", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_User_Scheduling");
 
                     b.Navigation("Professional");
+
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

@@ -56,7 +56,7 @@ namespace ConnectHealthApi.Controllers
                     Phone = model.Phone,
                     Username = model.Username,
                     PasswordHash = model.PasswordHash,
-                    CreatedAt = DateTime.Now, //model.CreatedAt,
+                    CreatedAt = DateTime.Now,
                     IsActive = model.IsActive,
                 };
                 await context.Users.AddAsync(user);
