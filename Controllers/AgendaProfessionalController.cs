@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ConnectHealthApi.Controllers
 {
+    [ApiController]
     public class AgendaProfessionalController : ControllerBase {
         [HttpGet("v1/agenda-professional/")]
         public async Task<IActionResult> GetAsync([FromServices] ConnectHealthContext context)
@@ -39,7 +40,7 @@ namespace ConnectHealthApi.Controllers
         }
 
         [HttpPost("v1/agenda-professional")]
-        public async Task<IActionResult> PostAsync([FromBody] AgendaProfessionalModel model, [FromServices] ConnectHealthContext context) 
+        public async Task<IActionResult> PostAsync([FromBody] EditorSchedulingProfessionalViewModel model, [FromServices] ConnectHealthContext context) 
         {
             if (!ModelState.IsValid)
                 return BadRequest(new ResultViewModel<AgendaProfessionalModel>(ModelState.GetErrors()));
@@ -57,15 +58,19 @@ namespace ConnectHealthApi.Controllers
                 await context.AgendaProfessionals.AddAsync(agenda);
                 await context.SaveChangesAsync();
 
-                return Created($"{agenda.Id}", new ResultViewModel<AgendaProfessionalModel>(agenda));
-            }catch
+                return Created($"{agenda.Id}", new ResultViewModel<AgendaProfessionalModel>("Consulta marcada"));
+            }
+            catch(DbUpdateException ex) {
+                return StatusCode(500, new ResultViewModel<AgendaProfessionalModel>($"A003P500 - Falha ao tentar inserir informação na Agenda {ex}"));
+            }
+            catch
             {
                 return StatusCode(500, new ResultViewModel<AgendaProfessionalModel>("A003P500 - Falha interna no servidor"));
             }
         }
 
         [HttpPut("v1/agenda-professional/{id:int}")]
-        public async Task<IActionResult> PutAsync([FromRoute] int id, [FromBody] AgendaProfessionalModel agenda, [FromServices] ConnectHealthContext context)
+        public async Task<IActionResult> PutAsync([FromRoute] int id, [FromBody] EditorSchedulingProfessionalViewModel agenda, [FromServices] ConnectHealthContext context)
         {
             try {
                 var model = await context.AgendaProfessionals.FirstOrDefaultAsync(x => x.Id == id);

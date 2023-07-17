@@ -12,7 +12,7 @@ namespace ConnectHealthApi.Data
         public DbSet<SchedulingModel> Schedulings { get; set; } = null!;
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            options.UseSqlServer("Server=<server>,<port>;Database=<database>;User ID=sa;Password=<password>;TrustServerCertificate=true");
+            options.UseSqlServer("Server=<Server>;Database=<Database>;User ID=sa;Password=<Password>;TrustServerCertificate=true");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

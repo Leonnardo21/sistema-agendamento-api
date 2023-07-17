@@ -193,7 +193,7 @@ namespace ConnectHealthApi.Migrations
 
             modelBuilder.Entity("ConnectHealthApi.Models.AgendaProfessionalModel", b =>
                 {
-                    b.HasOne("ConnectHealthApi.Models.UserModel", "Professional")
+                    b.HasOne("ConnectHealthApi.Models.ProfessionalModel", "Professional")
                         .WithMany()
                         .HasForeignKey("ProfessionalId")
                         .OnDelete(DeleteBehavior.Cascade)

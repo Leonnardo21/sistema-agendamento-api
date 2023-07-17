@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConnectHealthApi.Migrations
 {
     [DbContext(typeof(ConnectHealthContext))]
-    [Migration("20230615144420_CreateDatabase")]
+    [Migration("20230615184417_CreateDatabase")]
     partial class CreateDatabase
     {
         /// <inheritdoc />
@@ -196,7 +196,7 @@ namespace ConnectHealthApi.Migrations
 
             modelBuilder.Entity("ConnectHealthApi.Models.AgendaProfessionalModel", b =>
                 {
-                    b.HasOne("ConnectHealthApi.Models.UserModel", "Professional")
+                    b.HasOne("ConnectHealthApi.Models.ProfessionalModel", "Professional")
                         .WithMany()
                         .HasForeignKey("ProfessionalId")
                         .OnDelete(DeleteBehavior.Cascade)

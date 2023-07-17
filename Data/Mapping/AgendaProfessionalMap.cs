@@ -15,11 +15,20 @@ namespace ConnectHealthApi.Data.Mapping
                 .ValueGeneratedOnAdd()
                 .UseIdentityColumn();
 
-            builder.Property(x => x.Date);
-            builder.Property(x => x.TimeTable);
-            builder.Property(x => x.Duration);
-            builder.Property(x => x.Local);
-            builder.Property(x => x.ProfessionalId);
+            builder.Property(x => x.Date)
+                .IsRequired();
+
+            builder.Property(x => x.TimeTable)
+                .IsRequired();
+
+            builder.Property(x => x.Duration)
+                .IsRequired();
+
+            builder.Property(x => x.Local)
+                .IsRequired();
+
+            builder.Property(x => x.ProfessionalId)
+                .IsRequired();
 
             builder.HasOne(x => x.Professional)
                 .WithMany()

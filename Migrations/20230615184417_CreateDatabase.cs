@@ -53,6 +53,29 @@ namespace ConnectHealthApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Scheduling_Professional",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TimeTable = table.Column<TimeSpan>(type: "time", nullable: false),
+                    Duration = table.Column<int>(type: "int", nullable: false),
+                    Local = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProfessionalId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Scheduling_Professional", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SchedulingProfessional_ProfessionalId",
+                        column: x => x.ProfessionalId,
+                        principalTable: "Professional",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Scheduling",
                 columns: table => new
                 {
@@ -77,29 +100,6 @@ namespace ConnectHealthApi.Migrations
                     table.ForeignKey(
                         name: "FK_User_Scheduling",
                         column: x => x.UserId,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Scheduling_Professional",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TimeTable = table.Column<TimeSpan>(type: "time", nullable: false),
-                    Duration = table.Column<int>(type: "int", nullable: false),
-                    Local = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProfessionalId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Scheduling_Professional", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SchedulingProfessional_ProfessionalId",
-                        column: x => x.ProfessionalId,
                         principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -131,10 +131,10 @@ namespace ConnectHealthApi.Migrations
                 name: "Scheduling_Professional");
 
             migrationBuilder.DropTable(
-                name: "Professional");
+                name: "User");
 
             migrationBuilder.DropTable(
-                name: "User");
+                name: "Professional");
         }
     }
 }
